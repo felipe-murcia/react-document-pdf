@@ -1,0 +1,21 @@
+.outer-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
+    min-height: 100vh;       /* Altura mínima de la pantalla completa */
+    width: 100vw;            /* Ancho de la pantalla completa */
+    box-sizing: border-box;  /* Incluye padding y border en el ancho total */
+    padding: 20px;           /* Añade algo de padding */
+  }
+
+  .title{ 
+    font-size: 60px;
+    padding-left: 50px;
+  }
+  
+  .inner-container {
+    max-width: 100%;       /* Ancho máximo del contenedor */
+    width: 100%;             /* Ancho completo hasta el máximo */
+    box-sizing: border-box;  /* Incluye padding y border en el ancho total */
+  }
+  
