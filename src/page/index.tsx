@@ -1,8 +1,10 @@
-import React, { useState } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import './index.css'; 
 import ContainerSection from '../layout/ContainerSection';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Explore from '../components/Explore';
+import { PDFHistoria } from '../PDF/Historia';
+import { pdf } from '@react-pdf/renderer';
 
 const arrayPDF = [
     'PDF Historia',
@@ -17,14 +19,17 @@ const Index: React.FC = () => {
 
   const [ selectDocument, setSelectDocument ] = useState<any>(null);
 
-  pdfjs.GlobalWorkerOptions.workerSrc =
-  `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-const [numPages, setNumPages] = useState(0);
-const [pageNumber, setPageNumber] = useState(1);
-const [pageCount, setPageCount] = useState<[]>([]) 
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+  const [numPages, setNumPages] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageCount, setPageCount] = useState<[]>([]) 
   const [zoom, setZoom] = useState( 1.2)
+  const [urlPDF, setUrlPDF] = useState<string | null>(null)
 
-
+  useEffect(()=>{
+    onGeneratePDF()
+  },[])
+ 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
     setPageNumber(1);
@@ -49,6 +54,14 @@ const [pageCount, setPageCount] = useState<[]>([])
   const onClickMove = (page: number) => {
     if (page >= 1 && page <= numPages) setPageNumber(page)
     return null
+  }
+
+  const onGeneratePDF = async () => { 
+    setUrlPDF(null) 
+    // console.log('dataNegacion2', dataNegacion2)
+    const blob = await pdf(PDFHistoria()).toBlob();
+    const fileURL = await window.URL.createObjectURL(blob);
+    setUrlPDF(fileURL) 
   }
 
 
@@ -80,19 +93,29 @@ const [pageCount, setPageCount] = useState<[]>([])
 
         <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb'}}>
 
+            {
+              urlPDF&&
+            <Document
+                file={urlPDF}
+                onLoadSuccess={onDocumentLoadSuccess}
+              >
+                <Page pageNumber={pageNumber} scale={zoom} renderMode='canvas' renderTextLayer={false} renderAnnotationLayer={false} />
+              </Document>
+            }
+
         </div>
         <div style={{ flex:2, height:200, backgroundColor:'red'}}>
 
             <Explore 
-                      pageNumber={pageNumber}
-                      onClickZoomIn={onClickZoomIn}
-                      onClickZoomOut={onClickZoomOut}
-                      setZoom={() => setZoom(1)}
-                      onClickFirst={() => onClickMove(1)}
-                      onClickBack={() => onClickMove(pageNumber - 1)}
-                      onClickNext={() => onClickMove(pageNumber + 1)}
-                      onClickLast={() => onClickMove(pageCount.length)}
-                    />
+              pageNumber={pageNumber}
+              onClickZoomIn={onClickZoomIn}
+              onClickZoomOut={onClickZoomOut}
+              setZoom={() => setZoom(1)}
+              onClickFirst={() => onClickMove(1)}
+              onClickBack={() => onClickMove(pageNumber - 1)}
+              onClickNext={() => onClickMove(pageNumber + 1)}
+              onClickLast={() => onClickMove(pageCount.length)}
+            />
 
         </div>
          
