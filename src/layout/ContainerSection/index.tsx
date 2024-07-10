@@ -10,7 +10,7 @@ const ContainerSection: React.FC<ContainerSectionProps> = ({ children }) => {
     <div className="container">
       <div>
         <h1 className='title'> 
-          Documentos
+          Documentos 2
         </h1>
       </div>
       <div className="inner-container">
