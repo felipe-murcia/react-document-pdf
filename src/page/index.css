@@ -77,3 +77,26 @@ body {
   font-weight: 900;
   font-style: italic;
 }
+
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ajusta según tu necesidad */
+  width: 100%;
+  background-color: #f0f0f0; /* Color de fondo opcional */
+}
+
+.pdf-container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ajusta según tu necesidad */
+  width: 100%;
+  background-color: #f0f0f0; /* Color de fondo opcional */
+}
+
+
+.pdf-container canvas {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra opcional para el PDF */
+}

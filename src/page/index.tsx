@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import Explore from '../components/Explore';
 import { PDFHistoria } from '../PDF/Historia';
 import { pdf } from '@react-pdf/renderer';
+import MiniPageView from '../components/MiniPage';
 
 const arrayPDF = [
     'PDF Historia',
@@ -23,7 +24,7 @@ const Index: React.FC = () => {
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageCount, setPageCount] = useState<[]>([]) 
-  const [zoom, setZoom] = useState( 1.2)
+  const [zoom, setZoom] = useState( 1.0)
   const [urlPDF, setUrlPDF] = useState<string | null>(null)
 
   useEffect(()=>{
@@ -42,13 +43,13 @@ const Index: React.FC = () => {
   }
 
   function onClickZoomIn() {
-    let newZoom = zoom + 0.2
+    let newZoom = zoom + 0.1
     setZoom(newZoom)
   }
 
   function onClickZoomOut() {
-    let newZoom = zoom - 0.2
-    if (newZoom > 0.3) setZoom(newZoom)
+    let newZoom = zoom - 0.1 
+    setZoom(newZoom)
   }
 
   const onClickMove = (page: number) => {
@@ -91,20 +92,33 @@ const Index: React.FC = () => {
 
         </div>
 
-        <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb'}}>
+        <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb', overflow:'scroll'}}>
 
             {
               urlPDF&&
-            <Document
-                file={urlPDF}
-                onLoadSuccess={onDocumentLoadSuccess}
-              >
-                <Page pageNumber={pageNumber} scale={zoom} renderMode='canvas' renderTextLayer={false} renderAnnotationLayer={false} />
-              </Document>
+              <div className={zoom>=1.2?'':"pdf-container"}>
+                <Document
+                    file={urlPDF}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} scale={zoom} renderMode='canvas' renderTextLayer={false} renderAnnotationLayer={false} />
+                </Document>
+              </div>
             }
 
         </div>
-        <div style={{ flex:2, height:200, backgroundColor:'red'}}>
+        <div style={{ flex:2, height:200, backgroundColor:'red', }}>
+
+          <div style={{ overflowX: 'hidden', overflowY: 'auto', position: 'relative', width: '100%', overflow:'scroll', padding:10  }}>
+            <center>
+              {
+                urlPDF &&
+                pageCount.map((page) => {
+                  return <MiniPageView url={urlPDF} page={page} onClick={() => setPageNumber(page)} />
+                })
+              }
+            </center>
+          </div>
 
             <Explore 
               pageNumber={pageNumber}
