@@ -4,16 +4,17 @@ import './styles.css';
 interface Props {
 	url: string,
 	page: number,
-	onClick: (value: number) => void
+	onClick: (value: number) => void;
+	selected?:boolean;
 }
 
-function MiniPageView({ url, page, onClick }: Props) {
+function MiniPageView({ url, page, onClick, selected = false }: Props) {
 
 	return (
-		<div style={{ position: 'relative', marginBottom: 10, borderWidth: 1, borderColor: '#757575', borderStyle: 'solid', cursor: 'pointer', width: 'min-content' }} onClick={() => onClick(page)}>
+		<div style={{ position: 'relative', marginBottom: 10, borderWidth: 1, borderColor: '#757575', borderStyle: 'solid', cursor: 'pointer', width: 'min-content', border: selected?'solid 3px #7c01ff':'' }} onClick={() => onClick(page)}>
 			<Document file={url} >
 				<Page pageNumber={page} scale={0.3} renderMode='canvas' renderTextLayer={false} renderAnnotationLayer={false} />
-				<div style={{ width: 45, height: 22, backgroundColor: '#008767', position: 'absolute', bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+				<div style={{ width: '100%', height: 22, backgroundColor: '#7c01ff', position: 'absolute', bottom: 0,  display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 					<label className="numberPageView">{page}</label>
 				</div>
 			</Document>

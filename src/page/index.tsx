@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useContext, useEffect, useState } from 'react'; 
 import './index.css'; 
 import ContainerSection from '../layout/ContainerSection';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -6,11 +6,16 @@ import Explore from '../components/Explore';
 import { PDFHistoria } from '../PDF/Historia';
 import { pdf } from '@react-pdf/renderer';
 import MiniPageView from '../components/MiniPage';
+import { ImageComponent } from '../components/ImageComponent';
+import Button from '../components/Button';
+import { AppContext } from '../context/Context';
+import PDFView from '../components/PDFView';
+import { Navigate } from 'react-router-dom';
 
 const arrayPDF = [
     'PDF Historia',
     'PDF Factura',
-    'Crear PDF'
+    'PDF Contrato'
 ]
 
 const colorBackPDF = '#fbfbfb'
@@ -20,42 +25,19 @@ const Index: React.FC = () => {
 
   const [ selectDocument, setSelectDocument ] = useState<any>(null);
 
+  const { state: {  currentPage, numPages, pageCount, urlPDF  }, setCurrentPage, setPageCount, setNumPages, setUrlPDF } = useContext(AppContext);
+
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-  const [numPages, setNumPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageCount, setPageCount] = useState<[]>([]) 
-  const [zoom, setZoom] = useState( 1.0)
-  const [urlPDF, setUrlPDF] = useState<string | null>(null)
+  // const [numPages, setNumPages] = useState(0);
+  // const [pageNumber, setPageNumber] = useState(1);
+  // const [pageCount, setPageCount] = useState<[]>([]);
+  // const [urlPDF, setUrlPDF] = useState<string | null>(null)
+
+  const [ pageCreate, setPageCreate ] = useState(false)
 
   useEffect(()=>{
     onGeneratePDF()
-  },[])
- 
-  function onDocumentLoadSuccess({ numPages }: any) {
-    setNumPages(numPages);
-    setPageNumber(1);
-
-    const page: any = []
-    for (var i = 0; i < numPages; i++) {
-      page.push(i + 1)
-    }
-    setPageCount(page)
-  }
-
-  function onClickZoomIn() {
-    let newZoom = zoom + 0.1
-    setZoom(newZoom)
-  }
-
-  function onClickZoomOut() {
-    let newZoom = zoom - 0.1 
-    setZoom(newZoom)
-  }
-
-  const onClickMove = (page: number) => {
-    if (page >= 1 && page <= numPages) setPageNumber(page)
-    return null
-  }
+  },[]) 
 
   const onGeneratePDF = async () => { 
     setUrlPDF(null) 
@@ -70,14 +52,23 @@ const Index: React.FC = () => {
     <ContainerSection>
       <div style={{display:'flex', flexDirection:'row', backgroundColor:'#f6f7fc'}}>
 
+            
         <div style={{ flex:3,  display:'flex', flexDirection:'column', alignItems:'flex-end', }}>
+
+        <div style={{ width:'100%', display:'flex', justifyContent:'center'}}>
+          <Button title={'Crear Documento'} onClick={()=>setPageCreate(true)} />
+        </div>
+        
+        {
+          pageCreate&&<Navigate to="/create" replace={true} />
+        }
 
             {
                 arrayPDF.map((item,index)=>{
                     let selected = index==selectDocument
                     return(
-                        <div style={{width:'90%', height:140, backgroundColor:selected?colorBackPDF:colorCardBack, marginTop:40, padding:0,
-                            marginRight:selected?0:10, borderLeft:selected?'6px solid #242cc8':'', borderRadius:selected?'20px 0px 0px 20px': '20px' }} onClick={()=>setSelectDocument(index)}>
+                        <div style={{width:'90%', backgroundColor:selected?colorBackPDF:colorCardBack, marginTop:40, padding:0,
+                            marginRight:selected?0:10, borderLeft:selected?'6px solid #7c01ff':'' }} onClick={()=>setSelectDocument(index)}>
 
                               <div style={{padding:25}}>
                                 <h1 style={{fontSize:20}}>
@@ -92,45 +83,23 @@ const Index: React.FC = () => {
 
         </div>
 
-        <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb', overflow:'scroll'}}>
-
+        <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb', overflow:'scroll'}}> 
             {
-              urlPDF&&
-              <div className={zoom>=1.2?'':"pdf-container"}>
-                <Document
-                    file={urlPDF}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                  >
-                    <Page pageNumber={pageNumber} scale={zoom} renderMode='canvas' renderTextLayer={false} renderAnnotationLayer={false} />
-                </Document>
-              </div>
-            }
-
+              urlPDF&& <PDFView url={urlPDF} />
+            } 
         </div>
-        <div style={{ flex:2, height:200, backgroundColor:'red', }}>
 
-          <div style={{ overflowX: 'hidden', overflowY: 'auto', position: 'relative', width: '100%', overflow:'scroll', padding:10  }}>
+        <div style={{ flex:2, backgroundColor:'trasnparent', overflow: 'scroll', height: '85vh',  }}> 
+          <div style={{ overflowX: 'hidden', overflowY: 'auto', position: 'relative', width: '100%', overflow:'scroll', padding:10,   }}>
             <center>
               {
                 urlPDF &&
                 pageCount.map((page) => {
-                  return <MiniPageView url={urlPDF} page={page} onClick={() => setPageNumber(page)} />
+                  return <MiniPageView url={urlPDF} page={page} onClick={() => setCurrentPage(page)} selected={page==currentPage} />
                 })
               }
             </center>
-          </div>
-
-            <Explore 
-              pageNumber={pageNumber}
-              onClickZoomIn={onClickZoomIn}
-              onClickZoomOut={onClickZoomOut}
-              setZoom={() => setZoom(1)}
-              onClickFirst={() => onClickMove(1)}
-              onClickBack={() => onClickMove(pageNumber - 1)}
-              onClickNext={() => onClickMove(pageNumber + 1)}
-              onClickLast={() => onClickMove(pageCount.length)}
-            />
-
+          </div>  
         </div>
          
       </div>

@@ -22,30 +22,29 @@ function ExplorePDFWeb({ onClickZoomIn, onClickZoomOut, setZoom, onClickFirst, o
 
 	return (
 		<div style={{ height:150, top:120, right:0, backgroundColor:'transparent', width:50, marginLeft:10}}> 
-
-                    <div className='bottomSpace' onClick={onClickZoomIn}>              
-                      <IconZoomIn />
-                    </div>   
-                    <div className='bottomSpace' onClick={onClickZoomOut}> 
-                      <IconZoomOut/>
-                    </div>     
-                    <div className='bottomSpace' onClick={setZoom}> 
-                      <IconZoomOne />
-                    </div>   
-                    <div style={{height:30}} />
-                    <div className='bottomSpace'  onClick={onClickFirst}> 
-                      <FirstPage />
-                    </div>   
-                    <div className='bottomSpace' onClick={onClickBack} > 
-                      <BackPage />
-                    </div>    
-                    <div className='bottomSpace' onClick={onClickNext} > 
-                      <NextPage />
-                    </div>   
-                    <div className='bottomSpace' onClick={onClickLast}> 
-                      <LastPage />
-                    </div> 
-                  </div>
+      <div className='bottomSpace' onClick={onClickZoomIn}>              
+        <IconZoomIn />
+      </div>   
+      <div className='bottomSpace' onClick={onClickZoomOut}> 
+        <IconZoomOut/>
+      </div>     
+      <div className='bottomSpace' onClick={setZoom}> 
+        <IconZoomOne />
+      </div>   
+      <div style={{height:30}} />
+      <div className='bottomSpace'  onClick={onClickFirst}> 
+        <FirstPage />
+      </div>   
+      <div className='bottomSpace' onClick={onClickBack} > 
+        <BackPage />
+      </div>    
+      <div className='bottomSpace' onClick={onClickNext} > 
+        <NextPage />
+      </div>   
+      <div className='bottomSpace' onClick={onClickLast}> 
+        <LastPage />
+      </div> 
+    </div>
 	);
 }
 
