@@ -119,37 +119,3 @@ body {
   border: 0px;
   width: 382px;
 }
-
-form {
-padding: 20px;
-width: 80%;
-}
-
-.form-group {
-  margin-bottom: 25px;
-}
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
-}
-select, input, textarea, button {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-}
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-button:hover {
-  background-color: #0056b3;
-}
-.form-group > .dynamic-field {
-  margin-top: 10px;
-}

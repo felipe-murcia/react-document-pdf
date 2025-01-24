@@ -5,18 +5,16 @@ interface Props {
 	title: string;
   onClick: () => void;
   disabled?: boolean;
-  width?: string;
 }
 
-export default function Button({ title, onClick, disabled = false, width }:Props) {
+export default function Button({ title, onClick, disabled = false }:Props) {
     return (
-      <button className='button-primary' disabled={disabled} onClick={()=>onClick()} 
+      <button className='button-primary' onClick={()=>disabled?null:onClick()} 
         style={{
           backgroundColor:disabled?colorBackground:colorPrimary, 
-          // marginTop:20, 
+          width:382, marginTop:20, 
           color:disabled?colorSecondary:'white',
-          cursor:'pointer',
-          width: width || '400px',
+          cursor:'pointer'
         }}>{title}
       </button>
     );

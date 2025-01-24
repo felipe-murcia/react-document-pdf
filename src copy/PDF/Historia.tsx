@@ -1,12 +1,10 @@
 import { Document, Page, Text, Image, StyleSheet, View, Font } from '@react-pdf/renderer';
 
-export const PDFHistoria = () => {
-  
-  return(
+export const PDFHistoria = () => (
     <Document>
       <Page style={styles.body}>
         <Text style={styles.header} fixed>
-          ~ Generated with react-pdf ~
+          ~ Created with react-pdf ~
         </Text>
         <Text style={styles.title}>Don Quijote de la Mancha</Text>
         <Text style={styles.author}>Miguel de Cervantes</Text>
@@ -180,9 +178,7 @@ export const PDFHistoria = () => {
         )} fixed />
       </Page>
     </Document>
-  )
-  
-};
+  );
   
   Font.register({
     family: 'Oswald',

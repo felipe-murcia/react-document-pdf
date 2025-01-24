@@ -7,10 +7,11 @@ import { PDFHistoria } from '../PDF/Historia';
 import { pdf } from '@react-pdf/renderer';
 import MiniPageView from '../components/MiniPage';
 import { ImageComponent } from '../components/ImageComponent';
-import Button from '../components/Button';
+//import Button from '../components/Button';
 import { AppContext } from '../context/Context';
 import PDFView from '../components/PDFView';
 import { Navigate } from 'react-router-dom';
+import { Button } from 'antd';
 
 const arrayPDF = [
     'PDF Historia',
@@ -28,6 +29,10 @@ const Index: React.FC = () => {
   const { state: {  currentPage, numPages, pageCount, urlPDF  }, setCurrentPage, setPageCount, setNumPages, setUrlPDF } = useContext(AppContext);
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+  // const [numPages, setNumPages] = useState(0);
+  // const [pageNumber, setPageNumber] = useState(1);
+  // const [pageCount, setPageCount] = useState<[]>([]);
+  // const [urlPDF, setUrlPDF] = useState<string | null>(null)
 
   const [ pageCreate, setPageCreate ] = useState(false)
 
@@ -45,12 +50,15 @@ const Index: React.FC = () => {
 
 
   return (
-    <ContainerSection   onClickButton={()=> setPageCreate(true)} textButton='Crear documento' >
+    <ContainerSection>
       <div style={{display:'flex', flexDirection:'row', backgroundColor:'#f6f7fc'}}>
 
             
         <div style={{ flex:3,  display:'flex', flexDirection:'column', alignItems:'flex-end', }}>
- 
+
+        <div style={{ width:'100%', display:'flex', justifyContent:'center'}}>
+          <Button title={'Crear Documento'} onClick={()=>setPageCreate(true)} />
+        </div>
         
         {
           pageCreate&&<Navigate to="/create" replace={true} />
@@ -68,6 +76,8 @@ const Index: React.FC = () => {
                                     {item} 
                                 </h1>
                                 <span>Prueba</span>
+                                <Button type="primary">Primary Button</Button>
+                                
                               </div>
                         </div>
                     )
@@ -75,11 +85,13 @@ const Index: React.FC = () => {
             }
 
         </div>
- 
-        {
-          urlPDF&& <PDFView url={urlPDF} />
-        }
-        
+
+        <div style={{ flex:5, height:800, backgroundColor:'#fbfbfb', overflow:'scroll'}}> 
+            {
+              urlPDF&& <PDFView url={urlPDF} />
+            } 
+        </div>
+
         <div style={{ flex:2, backgroundColor:'trasnparent', overflow: 'scroll', height: '85vh',  }}> 
           <div style={{ overflowX: 'hidden', overflowY: 'auto', position: 'relative', width: '100%', overflow:'scroll', padding:10,   }}>
             <center>
